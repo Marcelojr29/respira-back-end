@@ -2,9 +2,10 @@ const express = require('express');
 require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
+const cors = require('cors')
 
+app.use(cors())
 app.use(express.json());
-
 
 const sensorRoutes = require('./src/routes/sensorRoutes');
 
