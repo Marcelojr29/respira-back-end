@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String // Nome do usuário
+  email    String @unique // Email único
+  password String // Senha criptografada
+  createdAt DateTime @default(now()) // Data de criação do usuário
+  role     String @default("user") // Pode ser "admin" ou "user"
+}
+
+model Sensor {
+  id         Int          @id @default(autoincrement())
+  location   String
+  status     String       @default("active")
+  createdAt  DateTime     @default(now())
+  sensorData SensorData[]
+}
+
+model SensorData {
+  id          Int      @id @default(autoincrement())
+  sensorId    Int
+  co2Level    Float
+  temperature Float
+  timestamp   DateTime @default(now())
+  sensor      Sensor   @relation(fields: [sensorId], references: [id])
+}
