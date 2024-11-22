@@ -6,7 +6,7 @@
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:root@mysql-db:3306/mydb"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
