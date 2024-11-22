@@ -10,21 +10,24 @@ services:
       - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=teste123"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: "mysql://root:teste123@mysql-db:3306/mydb"
-    depends_on:
-      - db
-    command: >
-      sh -c "npx prisma migrate dev &&
-             npx prisma generate &&
-             npm start"
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     DATABASE_URL: "mysql://root:teste123@mysql-db:3306/mydb"
+  #   depends_on:
+  #     db: 
+  #       condition: service_healthy
+  #       restart: true
 
 volumes:
   db-data:
