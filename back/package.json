@@ -17,8 +17,10 @@
     "express": "^4.21.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.9.16",
     "prisma": "^5.22.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",

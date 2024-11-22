@@ -27,7 +27,7 @@ exports.createSensorData = async (req, res) => {
             data: { sensorId: parseInt(sensorId), temperature, co2Level },         
         });
 
-        if (temperature > 50 || co2Level > 1000) {
+        if (temperature > 26 || co2Level > 5000) {
             console.log('⚠️ Alerta crítico! Temperatura ou nível de CO2 elevados.');
             // TODO: implementar um serviço de envio de e-mails ou de SMS
         }

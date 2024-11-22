@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const verifyAlerts = require('../services/alertService');
 
 exports.getAllSensors = async (req, res) => {
     try {
@@ -127,5 +128,30 @@ exports.getSensorData = async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar dados do sensor:', error);
         res.status(500).json({ error: 'Erro ao buscar dados do sensor.' });
+    }
+};
+
+exports.saveSensorData = async (req, res) => {
+    const { sensorId, value } = req.body;
+
+    if (!sensorId || value == null) {
+        return res.status(400).json({ error: 'Sensor e valor são obrigatórios.' });
+    }
+
+    try {
+        const sensor = await prisma.sensor.findUnique({ where: { id: sensorId } });
+        if (!sensor) {
+            return res.status(404).json({ error: 'Sensor não encontrado.' });
+        }
+
+        const sensorData = await prisma.sensorData.create({
+            data: { sensorId, value },
+        });
+
+        await verifyAlerts(sensorId, value);
+
+        res.status(201).json({ message: 'Dados de sensor salvos!', sensorData });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao salvar dados do sensor.' });
     }
 };

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const JWT_SECRET = process.env.JWT_SECRET || process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.register = async (req, res) => {
     try {
@@ -35,7 +35,13 @@ exports.login = async (req, res) => {
         if (!user) {
             return res.status(400).json({ error: 'Email ou senha inválidos.' });
         }
-        const token = jwt.sign({ userId: user.id}, JWT_SECRET, { expiresIn: '1h' });
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Senha inválida.' });
+        }
+
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '40d' });
 
         res.status(200).json({ message: 'Login realizado com sucesso.', token });
     } catch (error) {
