@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cors = require('cors')
 const express = require('express');
 const app = express();
 const sensorRoutes = require('./src/routes/sensorRoutes');
@@ -8,19 +9,21 @@ const alertRoutes = require('./src/routes/alertRoutes');
 const reportRoutes = require('./src/routes/reportRoutes');
 const mapRoutes = require('./src/routes/mapRoutes');
 
+app.use(cors());
+
 app.use(express.json());
 
-app.use('/api/sensors', sensorRoutes);
+app.use('/sensors', sensorRoutes);
 
-app.use('/api/sensor-data', sensorDataRoutes);
+app.use('/sensor-data', sensorDataRoutes);
 
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
-app.use('/api/alerts', alertRoutes);
+app.use('/alerts', alertRoutes);
 
-app.use('/api/reports', reportRoutes);
+app.use('/reports', reportRoutes);
 
-app.use('/api/map', mapRoutes);
+app.use('/map', mapRoutes);
 
 app.get('/', (req, res) => {
     res.send('Respira Back-End API está funcionando!');

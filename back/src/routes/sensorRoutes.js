@@ -6,7 +6,7 @@ const validate = require('../middleware/validate');
 const authMiddleware = require('../middleware/authMiddleware');
 const { createSensorSchema, createSensorDataSchema } = require('../validations/validationSchemas');
 
-router.use(authMiddleware); // Apply authentication middleware to all routes below
+// router.use(authMiddleware); // Apply authentication middleware to all routes below
 
 router.get('/', sensorController.getAllSensors);
 router.get('/:id', sensorController.getSensorById);
